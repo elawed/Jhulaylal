@@ -47,6 +47,10 @@
             $('#BagsTable tr:last #Discount').keyup(function () {
                 ChangeDiscount(this);
             });
+            $('#BagsTable tr:last #Bill').change(function (e) {
+                var r  = $('#BillID')[0].value
+                ChangeRemainingBags(this,r);
+            });
             $('#BagsTable tr:last #Amount').change(function () {
                 CalculateRemaining(this);
             });
@@ -131,7 +135,14 @@
         CalculateRemaining();
 
     }
-
+    function ChangeRemainingBags(td,Select)
+    {
+        tr = td.closest('tr');
+        $.get('@Url.Action("GetRemainingBags","AspNetSales")',
+        { FarmerID: Select }, function (data) {
+            $("td[id='RemainingBags']", tr).html(parseInt(data));
+        });
+    }
     function CalculateRemaining()
     {
         TempRemaining = RemainingBalance;
@@ -172,7 +183,7 @@
 
     function GetEnrollmentRow(value) {
 
-        var html = ' <tr><td id="Bill"></td><td><select id="Particular" class="form-control"><option value="Sale">Sale</option><option value="Cash">Cash</option></select></td><td><input id="Quantity" class="form-control"></td><td><input id="Rate" class="form-control"></td><td><input id="Amount" class="form-control"></td><td><input id="Received" class="form-control"></td><td><input id="Discount" class="form-control"></td><td><input id="Remaining" value=' + RemainingBalance+' class="form-control"></td><td><input type="button" class="btn btn-danger remove" value="Remove" onclick="DeleteRow(this);"></td></tr>';
+        var html = ' <tr><td id="Bill"></td><td><select id="Particular" class="form-control"><option value="Sale">Sale</option><option value="Cash">Cash</option></select></td><span id="RemainingBags"></span><td></td><td><input id="Quantity" class="form-control"></td><td><input id="Rate" class="form-control"></td><td><input id="Amount" class="form-control"></td><td><input id="Received" class="form-control"></td><td><input id="Discount" class="form-control"></td><td><input id="Remaining" value=' + RemainingBalance + ' class="form-control"></td><td><input type="button" class="btn btn-danger remove" value="Remove" onclick="DeleteRow(this);"></td></tr>';
         return html;
     }
 </script>
@@ -211,37 +222,42 @@
         <center><h3 class="box-title">Sales Detail</h3></center>
     </div>
     <div class="box-body">
-        <table id="BagsTable" class="table table-striped table-responsive table-hover table-bordered ">
-            <thead>
-                <tr>
-                    <th>
-                        Bill
-                    </th>
-                    <th>
-                        Particular
-                    </th>
-                    <th>
-                        Quantity
-                    </th>
-                    <th>
-                        Rate
-                    </th>
-                    <th>
-                        Amount
-                    </th>
-                    <th>
-                        Received
-                    </th>
-                    <th>
-                        Discount
-                    </th>
-                    <th>
-                        Remaining
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="BagsTableBody"></tbody>
-        </table>
+        <div style="overflow-x:auto;">
+            <table id="BagsTable" class="table table-striped table-responsive table-hover table-bordered ">
+                <thead>
+                    <tr>
+                        <th>
+                            Bill
+                        </th>
+                        <th>
+                            Particular
+                        </th>
+                        <th>
+                            Remaining Bags
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Rate
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+                        <th>
+                            Received
+                        </th>
+                        <th>
+                            Discount
+                        </th>
+                        <th>
+                            Remaining
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="BagsTableBody"></tbody>
+            </table>
+        </div>
     </div>
     <div class="box-footer">
                 <input id="AddSale" type="submit" value="Add Sales" class="btn btn-primary" />

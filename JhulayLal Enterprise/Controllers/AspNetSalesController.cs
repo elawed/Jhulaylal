@@ -36,11 +36,24 @@ namespace JhulayLal_Enterprise.Controllers
             }
             return View(aspNetSale);
         }
+        [HttpGet]
+        public ActionResult GetRemainingBags(int FarmerID)
+        {
+            var numberofBags=db.AspNetBills.Where(x => x.FarmerID == FarmerID).Select(x => x.Bags_Qty).First();
+            return Json(numberofBags,JsonRequestBehavior.AllowGet);
+        }
 
         // GET: AspNetSales/Create
         public ActionResult Create()
         {
-            ViewBag.BillID = new SelectList(db.AspNetBills.Where(x=>x.Bill_Status=="Not Generated"), "Id", "Truck_No");
+            var ty = (from name in db.AspNetFarmers
+                      join e in db.AspNetBills on name.Id equals e.FarmerID select new
+                      {
+                          name.Name
+                      }).ToList();
+             
+          
+            ViewBag.BillID = new SelectList(db.AspNetBills.Where(x => x.Bill_Status == "Not Generated"), "Id", ty);
             ViewBag.CustomerID = new SelectList(db.AspNetCustomers, "Id", "Name");
             return View();
         }

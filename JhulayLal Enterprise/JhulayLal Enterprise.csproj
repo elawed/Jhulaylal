@@ -268,6 +268,11 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ApplicationInsights.config" />
+    <Content Include="App_Data\aspnet-JhulayLal Enterprise-20171128025058.mdf" />
+    <Content Include="App_Data\aspnet-JhulayLal Enterprise-20171128025058_log.ldf">
+      <DependentUpon>aspnet-JhulayLal Enterprise-20171128025058.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -6883,9 +6888,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\fontawesome-webfont.woff" />
@@ -7615,9 +7617,7 @@
     <Content Include="Views\Shared\_header.cshtml" />
     <Content Include="Views\Shared\_sideBar.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

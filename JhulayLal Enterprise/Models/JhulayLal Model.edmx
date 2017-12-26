@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="JhulayLalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -35,6 +35,7 @@
           <Property Name="Expenses" Type="int" />
           <Property Name="Total Amount" Type="int" />
           <Property Name="Bill Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="BillName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="AspNetBillDetail">
           <Key>
@@ -240,7 +241,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="JhulayLalModelStoreContainer">
+        <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetBill" EntityType="Self.AspNetBill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetBillDetail" EntityType="Self.AspNetBillDetail" Schema="dbo" store:Type="Tables" />
@@ -289,7 +290,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="JhulayLalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -320,6 +321,7 @@
           <Property Name="Expenses" Type="Int32" />
           <Property Name="Total_Amount" Type="Int32" />
           <Property Name="Bill_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BillName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetFarmer" Relationship="Self.FK_AspNetBill_ToFarmer" FromRole="AspNetBill" ToRole="AspNetFarmer" />
           <NavigationProperty Name="AspNetBillDetails" Relationship="Self.FK_AspNetBillDetail_ToBill" FromRole="AspNetBill" ToRole="AspNetBillDetail" />
           <NavigationProperty Name="AspNetSales" Relationship="Self.FK_AspNetSale_ToBill" FromRole="AspNetBill" ToRole="AspNetSale" />
@@ -552,9 +554,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="JhulayLalModelStoreContainer" CdmEntityContainer="JhulayLalEntities">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="JhulayLalEntities">
           <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="JhulayLalModel.C__MigrationHistory">
+            <EntityTypeMapping TypeName="Model.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
                 <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
@@ -564,7 +566,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetBills">
-            <EntityTypeMapping TypeName="JhulayLalModel.AspNetBill">
+            <EntityTypeMapping TypeName="Model.AspNetBill">
               <MappingFragment StoreEntitySet="AspNetBill">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FarmerID" ColumnName="FarmerID" />
@@ -582,11 +584,12 @@
                 <ScalarProperty Name="Expenses" ColumnName="Expenses" />
                 <ScalarProperty Name="Total_Amount" ColumnName="Total Amount" />
                 <ScalarProperty Name="Bill_Status" ColumnName="Bill Status" />
+                <ScalarProperty Name="BillName" ColumnName="BillName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetBillDetails">
-            <EntityTypeMapping TypeName="JhulayLalModel.AspNetBillDetail">
+            <EntityTypeMapping TypeName="Model.AspNetBillDetail">
               <MappingFragment StoreEntitySet="AspNetBillDetail">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Bags" ColumnName="Bags" />
@@ -597,7 +600,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetCustomers">
-            <EntityTypeMapping TypeName="JhulayLalModel.AspNetCustomer">
+            <EntityTypeMapping TypeName="Model.AspNetCustomer">
               <MappingFragment StoreEntitySet="AspNetCustomer">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -611,7 +614,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetFarmers">
-            <EntityTypeMapping TypeName="JhulayLalModel.AspNetFarmer">
+            <EntityTypeMapping TypeName="Model.AspNetFarmer">
               <MappingFragment StoreEntitySet="AspNetFarmer">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -622,7 +625,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="JhulayLalModel.AspNetRole">
+            <EntityTypeMapping TypeName="Model.AspNetRole">
               <MappingFragment StoreEntitySet="AspNetRoles">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -630,7 +633,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetSales">
-            <EntityTypeMapping TypeName="JhulayLalModel.AspNetSale">
+            <EntityTypeMapping TypeName="Model.AspNetSale">
               <MappingFragment StoreEntitySet="AspNetSale">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
@@ -647,7 +650,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="JhulayLalModel.AspNetUserClaim">
+            <EntityTypeMapping TypeName="Model.AspNetUserClaim">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -657,7 +660,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="JhulayLalModel.AspNetUserLogin">
+            <EntityTypeMapping TypeName="Model.AspNetUserLogin">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
                 <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
@@ -666,7 +669,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="JhulayLalModel.AspNetUser">
+            <EntityTypeMapping TypeName="Model.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -683,7 +686,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="JhulayLalModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
             <EndProperty Name="AspNetRoles">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>

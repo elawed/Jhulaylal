@@ -17,116 +17,118 @@
         <h3>Bills</h3>
     </div>
     <div class="box-body">
-        <table id="BillTable" class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Date)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Truck_No)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Bags_Qty)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Freight_Charges)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Commission)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Labour)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Market_Fees)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Telephone_Charges)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Accountant)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Total_Expenses)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Amount)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Expenses)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Total_Amount)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.AspNetFarmer.Name)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @foreach (var item in Model)
-                {
+        <div style="overflow-x:auto;">
+            <table id="BillTable" class="table table-responsive  table-bordered">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Date)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Truck_No)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Bags_Qty)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Freight_Charges)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Commission)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Labour)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Market_Fees)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Telephone_Charges)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Accountant)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Total_Expenses)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Amount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Expenses)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Total_Amount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.AspNetFarmer.Name)
-                        </td>
-                        <td>
-                           
-                            @if (item.Bill_Status == "Not Generated")
+                        <th>
+                            @Html.DisplayNameFor(model => model.Date)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Truck_No)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Bags_Qty)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Freight_Charges)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Commission)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Labour)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Market_Fees)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Telephone_Charges)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Accountant)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Total_Expenses)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Amount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Expenses)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Total_Amount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AspNetFarmer.Name)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Truck_No)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Bags_Qty)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Freight_Charges)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Commission)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Labour)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Market_Fees)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Telephone_Charges)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Accountant)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total_Expenses)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Expenses)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total_Amount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AspNetFarmer.Name)
+                            </td>
+                            <td>
+
+                                @if (item.Bill_Status == "Not Generated")
                             {
-                                @Html.ActionLink("Generate Bill", "GenerateBill", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-primary btn-xs" })
+                                    @Html.ActionLink("Generate Bill", "GenerateBill", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-primary btn-xs" })
                             }
                             else
                             {
-                                @Html.ActionLink("Details", "GenerateBill", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-success btn-xs" })
+                                    @Html.ActionLink("Details", "GenerateBill", new { id = item.Id }, htmlAttributes: new { @class = "btn btn-success btn-xs" })
                             }
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
                 }
 
-            </tbody>
-        </table>    
+                </tbody>
+            </table>
+        </div> 
     </div>
 </div>
