@@ -1,0 +1,133 @@
+﻿@model IEnumerable<JhulayLal_Enterprise.Models.AspNetSale>
+
+@{
+    ViewBag.Title = "Customer";
+}
+
+<script>
+    $(document).ready(function () {
+        $('#CustomerDetail').DataTable({
+        })
+    });
+</script>
+
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3>Customer Details</h3>
+    </div>
+    <div class="box-header with-border">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-5">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <b>Customer Name:</b>
+                                    </td>
+                                    <td>
+                                        @ViewBag.Name
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Contact No:</b>
+                                    </td>
+                                    <td>
+                                        @ViewBag.ContactNo
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Account No:</b>
+                                    </td>
+                                    <td>
+                                        @ViewBag.AccountNo
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>CNIC No:</b>
+                                    </td>
+                                    <td>
+                                        @ViewBag.CNIC
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="box-body">
+        <table id="CustomerDetail" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Particular)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quantity)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Rate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Received)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Discount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Remaining)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Particular)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Received)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Discount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Remaining)
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+

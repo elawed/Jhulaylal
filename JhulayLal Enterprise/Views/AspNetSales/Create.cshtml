@@ -1,0 +1,263 @@
+﻿@model JhulayLal_Enterprise.Models.AspNetSale
+
+@{
+    ViewBag.Title = "Sales";
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script>
+    var AspNetSale =
+        {
+            CustomerID: '',
+            Date: '',
+            Particular: '',
+            BillID: '',
+            Quantity: '',
+            Rate: '',
+            Amount: '',
+            Received: '',
+            Discount: '',
+            Remaining:''
+        }
+    var RemainingBalance = 0;
+    $(document).ready(function () {
+
+
+        $('#CustomerID').change(function () {
+            var id = $('#CustomerID').val();
+             $.get('@Url.Action("GetCustomerInfomration","AspNetCustomers")',
+                 { Id: id }, function (data) {
+                     console.log(data);
+                     RemainingBalance = data.Remaining;
+            });
+        });
+        $("#AddBags").bind("click", function () {
+
+            $("#BagsTableBody").append(GetEnrollmentRow(-1));
+            $('#BagsTable tr:last td:first').append($("#BillID").clone());
+            $('#BagsTable tr:last #Quantity').change(function () {
+                ChangeQuantity(this);
+            });
+            $('#BagsTable tr:last #Rate').keyup(function () {
+                ChangeRate(this);
+            });
+            $('#BagsTable tr:last #Received').keyup(function () {
+                ChangeReceived(this);
+            });
+            $('#BagsTable tr:last #Discount').keyup(function () {
+                ChangeDiscount(this);
+            });
+            $('#BagsTable tr:last #Amount').change(function () {
+                CalculateRemaining(this);
+            });
+
+
+        });
+
+        $("#AddSale").bind("click", function () {
+            aspNetSale = [];
+
+            $("#BagsTableBody tr").each(function () {
+                AspNetSale = Object.create(AspNetSale);
+                AspNetSale.CustomerID = $("#CustomerID").val();
+                AspNetSale.Date = $("#Date").val();
+                AspNetSale.BillID = $(this).find('#BillID').val();
+                AspNetSale.Discount = $(this).find('#Discount').val();
+                AspNetSale.Particular = $(this).find('#Particular').val();
+                AspNetSale.Quantity = $(this).find('#Quantity').val();
+                AspNetSale.Rate = $(this).find("#Rate").val();
+                AspNetSale.Amount = $(this).find("#Amount").val();
+                AspNetSale.Received = $(this).find("#Received").val();
+                AspNetSale.Remaining = $(this).find("#Remaining").val();
+                aspNetSale.push(AspNetSale);
+            });
+
+            var aspNetSale = JSON.stringify(aspNetSale);
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType:'json',
+                type:'POST',
+                url:'/AspNetSales/AddSales',
+                data: "{aspNetSale:" + aspNetSale+"}",
+                success:function(flag)
+                {
+                    if(flag==1)
+                    {
+                        location.href='@Url.Action("Index", "AspNetSales")';
+                    }
+                }
+            });
+
+        });
+    });
+
+    function ChangeQuantity(Quantity) {
+        tr = Quantity.closest("tr");
+        var Rate = parseInt($("input[id='Rate']", tr).val());
+        var QuantityVal = parseInt($(Quantity).val());
+        var Amount = 0;
+        if (!isNaN(Rate) && !isNaN(QuantityVal)) {
+            Amount = parseInt(Rate * QuantityVal);
+        }
+
+        $("input[id='Amount']", tr).val(Amount);
+
+        CalculateRemaining();
+    }
+
+    function ChangeRate(Rate) {
+        tr = Rate.closest("tr");
+        var Quantity = parseInt($("input[id='Quantity']", tr).val());
+        var RateVal = parseInt($(Rate).val());
+        var Amount = 0;
+        if (!isNaN(Quantity) && !isNaN(RateVal)) {
+            Amount = parseInt(Quantity * RateVal);
+        }
+        $("input[id='Amount']", tr).val(Amount);
+        CalculateRemaining();
+
+    }
+    function ChangeReceived(Received) {
+        tr = Received.closest("tr");
+        var Remaining = parseInt($("input[id='Remaining']", tr).val());
+        var Received = parseInt($(Received).val());
+        CalculateRemaining();
+
+    }
+    function ChangeDiscount(Discount) {
+        tr = Discount.closest("tr");
+        var Remaining = parseInt($("input[id='Remaining']", tr).val());
+        var Discount = parseInt($(Discount).val());
+        CalculateRemaining();
+
+    }
+
+    function CalculateRemaining()
+    {
+        TempRemaining = RemainingBalance;
+        console.log("Temp Remaining:"+TempRemaining);
+        $("#BagsTableBody tr").each(function () {
+
+            var Amount = parseInt($(this).find('#Amount').val());
+            var Discount = parseInt( $(this).find('#Discount').val());
+            var Received = parseInt($(this).find('#Received').val());
+
+            if (isNaN(Amount))
+            {
+                Amount = 0;
+            }
+            if (isNaN(Discount)) {
+                Discount = 0;
+            }
+            if (isNaN(Received)) {
+                Received = 0;
+            }
+
+            TempRemaining = (((TempRemaining + Amount) - Discount) - Received);
+            console.log("Temp Remaining After Sub:" + TempRemaining);
+            $("input[id='Remaining']", $(this)).val(TempRemaining);
+
+        });
+    }
+
+
+    function DeleteRow(btndel) {
+        if (typeof (btndel) == "object") {
+            $(btndel).closest("tr").remove();
+        }
+        else {
+            return false;
+        }
+    }
+
+    function GetEnrollmentRow(value) {
+
+        var html = ' <tr><td id="Bill"></td><td><select id="Particular" class="form-control"><option value="Sale">Sale</option><option value="Cash">Cash</option></select></td><td><input id="Quantity" class="form-control"></td><td><input id="Rate" class="form-control"></td><td><input id="Amount" class="form-control"></td><td><input id="Received" class="form-control"></td><td><input id="Discount" class="form-control"></td><td><input id="Remaining" value=' + RemainingBalance+' class="form-control"></td><td><input type="button" class="btn btn-danger remove" value="Remove" onclick="DeleteRow(this);"></td></tr>';
+        return html;
+    }
+</script>
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3>Add New Sales</h3>
+    </div>
+    <div class="box-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerID, "CustomerID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("CustomerID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="box-footer">
+        <button id="AddBags" class="btn btn-primary">Add Bags</button>
+    </div>
+</div>
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <center><h3 class="box-title">Sales Detail</h3></center>
+    </div>
+    <div class="box-body">
+        <table id="BagsTable" class="table table-striped table-responsive table-hover table-bordered ">
+            <thead>
+                <tr>
+                    <th>
+                        Bill
+                    </th>
+                    <th>
+                        Particular
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Rate
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th>
+                        Received
+                    </th>
+                    <th>
+                        Discount
+                    </th>
+                    <th>
+                        Remaining
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="BagsTableBody"></tbody>
+        </table>
+    </div>
+    <div class="box-footer">
+                <input id="AddSale" type="submit" value="Add Sales" class="btn btn-primary" />
+
+    </div>
+</div>
+<div hidden>
+    <div class="form-group">
+        @Html.LabelFor(model => model.BillID, "BillID", htmlAttributes: new { @class = "control-label col-md-2", @name = "BillID[]" })
+        <div class="col-md-10">
+            @Html.DropDownList("BillID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.BillID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

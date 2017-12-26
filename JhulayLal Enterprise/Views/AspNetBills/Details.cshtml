@@ -1,0 +1,130 @@
+﻿@model JhulayLal_Enterprise.Models.AspNetBill
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AspNetBill</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Truck_No)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Truck_No)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bags_Qty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bags_Qty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Freight_Charges)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Freight_Charges)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Commission)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Commission)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Labour)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Labour)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Market_Fees)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Market_Fees)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telephone_Charges)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telephone_Charges)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Accountant)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Accountant)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total_Expenses)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total_Expenses)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Expenses)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Expenses)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total_Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total_Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetFarmer.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetFarmer.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,423 @@
+﻿@model JhulayLal_Enterprise.Models.AspNetBill
+@{
+    ViewBag.Title = "Generate Bill";
+}
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" media="all">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" media="all">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+<style>
+    .disable {
+        pointer-events: none;
+    }
+</style>
+<script>
+    function printout() {
+        print($('#abc').html());
+    }
+    $(document).ready(function () {
+        $('#Freight_Charges').keyup(function ()
+        {
+            var totalExpenses = parseInt($('#HiddenExpense').val());
+            var freightCharges = parseInt($('#Freight_Charges').val());
+            var total = parseInt(totalExpenses + freightCharges);
+            $('#Total_Expenses').val(total);
+            $('#Expenses').val(total);
+            $('#Total_Amount').val(parseInt($('#Amount').val()) - total);
+            
+        })
+    });
+</script>
+
+@if (Model.Bill_Status == "Not Generated")
+{
+    <div class="box box-primary">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+            <div class="box-header with-border">
+                <h4>Customer Bill</h4>
+            </div>
+            <div class="box-body">
+                <div id="abc" class="container">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-3 disable" style="border-style:ridge;">
+                                    <center>@Html.DisplayFor(model => model.AspNetFarmer.Name)</center>
+                                </div>
+                                <div class="col-xs-3 col-xs-offset-1 disable" style="border-style:ridge;">
+                                    <center><b>Truck No:</b>@Html.DisplayFor(model => model.Truck_No)</center>
+                                </div>
+                                <div class="col-xs-3 col-xs-offset-1 disable" style="border-style:ridge;">
+                                    <center><b>Qty Bags:</b>@Html.DisplayFor(model => model.Bags_Qty)</center>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-3 disable" style="border-style:ridge;">
+                                    <center><b>Date:</b>@Html.DisplayFor(model => model.Date)</center>
+                                </div>
+                                <div class="col-xs-3 col-xs-offset-1 disable " style="border-style:ridge;">
+                                    <center><b>Bill No:</b>@Html.DisplayFor(model => model.Id)</center>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <table class="table table-bordered table-striped" border="1">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Freight_Charges)
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Freight_Charges, new { htmlAttributes = new { @class = "form-control" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Commission)
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Commission, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Labour)
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Labour, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Market_Fees)
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Market_Fees, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Telephone_Charges)
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Telephone_Charges, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Accountant)
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Accountant, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Total_Expenses)
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Total_Expenses, new { htmlAttributes = new { @class = "form-control disable" } })
+                                                <div hidden>
+                                                    @Html.EditorFor(model => model.Total_Expenses, new { htmlAttributes = new { @id = "HiddenExpense", @class = "form-control" } })
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-xs-5 col-xs-offset-1">
+                                <table class="table table-bordered table-striped" border="1">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Bags Quantity
+                                            </th>
+                                            <th>
+                                                Rate
+                                            </th>
+                                            <th>
+                                                Amount
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.BagsDetail)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.Bags
+                                                </td>
+                                                <td>
+                                                    @item.Rate
+                                                </td>
+                                                <td>
+                                                    @item.Amount
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table class="table table-bordered table-striped" border="1">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Amount)
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Expenses)
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Expenses, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Total_Amount)
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Total_Amount, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <div class="col-xs-12">
+                    @if (Model.Bill_Status == "Not Generated")
+                    {
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <button class="btn btn-primary" onclick="printout()" disabled>Print</button>
+                    }
+                    else
+                    {
+                        <input type="submit" value="Save" class="btn btn-primary" disabled />
+                        <button class="btn btn-primary" onclick="printout()">Print</button>
+                    }
+
+                    <button class="btn btn-danger pull-right">Cancel</button>
+                </div>
+            </div>
+        }
+    </div>
+
+}
+else
+{
+    <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h4>Customer Bill</h4>
+            </div>
+            <div class="box-body">
+                <div id="abc" class="container">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-3 disable" style="border-style:ridge;">
+                                    <center>@Html.DisplayFor(model => model.AspNetFarmer.Name)</center>
+                                </div>
+                                <div class="col-xs-3 col-xs-offset-1 disable" style="border-style:ridge;">
+                                    <center><b>Truck No:</b>@Html.DisplayFor(model => model.Truck_No)</center>
+                                </div>
+                                <div class="col-xs-3 col-xs-offset-1 disable" style="border-style:ridge;">
+                                    <center><b>Qty Bags:</b>@Html.DisplayFor(model => model.Bags_Qty)</center>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-3 disable" style="border-style:ridge;">
+                                    <center><b>Date:</b>@Html.DisplayFor(model => model.Date)</center>
+                                </div>
+                                <div class="col-xs-3 col-xs-offset-1 disable " style="border-style:ridge;">
+                                    <center><b>Bill No:</b>@Html.DisplayFor(model => model.Id)</center>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <table class="table table-bordered table-striped" border="1">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Freight_Charges)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.Freight_Charges, new { htmlAttributes = new { @class = "form-control" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Commission)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.Commission, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Labour)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.Labour, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Market_Fees)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.Market_Fees, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Telephone_Charges)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.Telephone_Charges, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Accountant)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.Accountant, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Total_Expenses)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.Total_Expenses, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-xs-5 col-xs-offset-1">
+                                <table class="table table-bordered table-striped" border="1">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Bags Quantity
+                                            </th>
+                                            <th>
+                                                Rate
+                                            </th>
+                                            <th>
+                                                Amount
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in ViewBag.BagsDetail)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.Bags
+                                                </td>
+                                                <td>
+                                                    @item.Rate
+                                                </td>
+                                                <td>
+                                                    @item.Amount
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table class="table table-bordered table-striped" border="1">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Amount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Expenses)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.Expenses, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.LabelFor(model => model.Total_Amount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.Total_Amount, new { htmlAttributes = new { @class = "form-control disable" } })
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <div class="col-xs-12">
+                    @if (Model.Bill_Status == "Not Generated")
+                    {
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <button class="btn btn-primary" onclick="printout()" disabled>Print</button>
+                    }
+                    else
+                    {
+                        <input type="submit" value="Save" class="btn btn-primary" disabled />
+                        <button class="btn btn-primary" onclick="printout()">Print</button>
+                    }
+
+                    <button class="btn btn-danger pull-right">Cancel</button>
+                </div>
+            </div>
+        
+    </div>
+
+}
