@@ -47,10 +47,10 @@
             $('#BagsTable tr:last #Discount').keyup(function () {
                 ChangeDiscount(this);
             });
-            $('#BagsTable tr:last #Bill').change(function (e) {
-                var r  = $('#BillID')[0].value
-                ChangeRemainingBags(this,r);
-            });
+            //$('#BagsTable tr:last #Bill').change(function (e) {
+            //    var r  = $('#BillID')[0].value
+            //    ChangeRemainingBags(this,r);
+            //});
             $('#BagsTable tr:last #Amount').change(function () {
                 CalculateRemaining(this);
             });
@@ -74,6 +74,7 @@
                 AspNetSale.Received = $(this).find("#Received").val();
                 AspNetSale.Remaining = $(this).find("#Remaining").val();
                 aspNetSale.push(AspNetSale);
+                console.log(AspNetSale);
             });
 
             var aspNetSale = JSON.stringify(aspNetSale);
@@ -135,14 +136,14 @@
         CalculateRemaining();
 
     }
-    function ChangeRemainingBags(td,Select)
+    @*function ChangeRemainingBags(td,Select)
     {
         tr = td.closest('tr');
         $.get('@Url.Action("GetRemainingBags","AspNetSales")',
-        { FarmerID: Select }, function (data) {
+        { Billname: Select }, function (data) {
             $("td[id='RemainingBags']", tr).html(parseInt(data));
         });
-    }
+    }*@
     function CalculateRemaining()
     {
         TempRemaining = RemainingBalance;
@@ -183,7 +184,7 @@
 
     function GetEnrollmentRow(value) {
 
-        var html = ' <tr><td id="Bill"></td><td><select id="Particular" class="form-control"><option value="Sale">Sale</option><option value="Cash">Cash</option></select></td><span id="RemainingBags"></span><td></td><td><input id="Quantity" class="form-control"></td><td><input id="Rate" class="form-control"></td><td><input id="Amount" class="form-control"></td><td><input id="Received" class="form-control"></td><td><input id="Discount" class="form-control"></td><td><input id="Remaining" value=' + RemainingBalance + ' class="form-control"></td><td><input type="button" class="btn btn-danger remove" value="Remove" onclick="DeleteRow(this);"></td></tr>';
+        var html = ' <tr><td id="Bill"></td><td><select id="Particular" class="form-control"><option value="Sale">Sale</option><option value="Cash">Cash</option></select></td><td><input id="Quantity" class="form-control"></td><td><input id="Rate" class="form-control"></td><td><input id="Amount" class="form-control"></td><td><input id="Received" class="form-control"></td><td><input id="Discount" class="form-control"></td><td><input id="Remaining" value=' + RemainingBalance + ' class="form-control"></td><td><input type="button" class="btn btn-danger remove" value="Remove" onclick="DeleteRow(this);"></td></tr>';
         return html;
     }
 </script>
@@ -205,7 +206,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" ,@type="date"} })
                     @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                 </div>
             </div>

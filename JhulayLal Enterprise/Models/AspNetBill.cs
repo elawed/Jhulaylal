@@ -37,7 +37,7 @@ namespace JhulayLal_Enterprise.Models
         public Nullable<int> Expenses { get; set; }
         public Nullable<int> Total_Amount { get; set; }
         public string Bill_Status { get; set; }
-        public string BillName { get; set; }
+        public string FarmerName { get; set; }
     
         public virtual AspNetFarmer AspNetFarmer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<JhulayLal_Enterprise.Models.FarmerSalesModel>
+<script>
+    function printout() {
+        print($('#abc').html());
+    }
+</script>
+<div id="abc" style="overflow-x:auto;">
+    <center><h2>Farmer Sales Records</h2></center>
+    @foreach(var record in Model)
+    {
+        <div class="box box-primary">
+               <div class="box-header with-border">
+                   <center><h4>@Html.DisplayFor(modelItem => record.Name)</h4></center>
+               </div>
+            <div class="box-body">
+                <table class="table table-bordered table-hover table-responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Customer Name
+                            </th>
+                            <th>
+                                Particular
+                            </th>
+                            <th>
+                                Quantity
+                            </th>
+                            <th>
+                                Rate
+                            </th>
+                            <th>
+                                Amount
+                            </th>
+                            <th>
+                                Received
+                            </th>
+                            <th>
+                                Discount
+                            </th>
+                            <th>
+                                Remaining
+                            </th>
+                            <th>
+                                Truck_No
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in record.saleslist)
+                        {
+                        <tr>
+                            
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AspNetCustomer.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Particular)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Rate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Received)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Discount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Remaining)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AspNetBill.Truck_No)
+                            </td>
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>   
+    }
+    <input type="button" value="Print" onclick="printout()" class="btn btn-primary"/>
+</div>
+

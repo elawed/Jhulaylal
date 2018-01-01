@@ -247,6 +247,7 @@
     <Compile Include="Models\C__MigrationHistory.cs">
       <DependentUpon>JhulayLal Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FarmerSalesModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JhulayLal Model.Context.cs">
       <AutoGen>True</AutoGen>
@@ -7616,6 +7617,8 @@
     <Content Include="Views\AspNetSales\CustomerSales.cshtml" />
     <Content Include="Views\Shared\_header.cshtml" />
     <Content Include="Views\Shared\_sideBar.cshtml" />
+    <Content Include="Views\AspNetSales\TodaysSale.cshtml" />
+    <Content Include="Views\AspNetSales\FarmersSale.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

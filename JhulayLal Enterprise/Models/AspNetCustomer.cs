@@ -28,6 +28,7 @@ namespace JhulayLal_Enterprise.Models
         public string CNIC { get; set; }
         public Nullable<int> AccountNo { get; set; }
         public byte[] Picture { get; set; }
+        public string Imagepath { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetSale> AspNetSales { get; set; }

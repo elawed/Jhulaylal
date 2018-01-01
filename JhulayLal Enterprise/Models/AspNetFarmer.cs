@@ -25,6 +25,7 @@ namespace JhulayLal_Enterprise.Models
         public string City { get; set; }
         public string Address { get; set; }
         public string Contact_No { get; set; }
+        public string Imagepath { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetBill> AspNetBills { get; set; }

@@ -36,25 +36,19 @@ namespace JhulayLal_Enterprise.Controllers
             }
             return View(aspNetSale);
         }
-        [HttpGet]
-        public ActionResult GetRemainingBags(int FarmerID)
-        {
-            var numberofBags=db.AspNetBills.Where(x => x.FarmerID == FarmerID).Select(x => x.Bags_Qty).First();
-            return Json(numberofBags,JsonRequestBehavior.AllowGet);
-        }
+        //[HttpGet]
+        //public ActionResult GetRemainingBags(string Billname)
+        //{
+        //    var numberofBags=db.AspNetBills.Where(x => x.BillName == Billname).Select(x => x.Bags_Qty).First();
+        //    return Json(numberofBags,JsonRequestBehavior.AllowGet);
+        //}
 
         // GET: AspNetSales/Create
         public ActionResult Create()
         {
-            var ty = (from name in db.AspNetFarmers
-                      join e in db.AspNetBills on name.Id equals e.FarmerID select new
-                      {
-                          name.Name
-                      }).ToList();
-             
-          
-            ViewBag.BillID = new SelectList(db.AspNetBills.Where(x => x.Bill_Status == "Not Generated"), "Id", ty);
+            ViewBag.BillID = new SelectList(db.AspNetBills.Where(x => x.Bill_Status == "Not Generated"), "Id", "FarmerName");
             ViewBag.CustomerID = new SelectList(db.AspNetCustomers, "Id", "Name");
+            ViewBag.Today = DateTime.Now;
             return View();
         }
 
@@ -64,12 +58,11 @@ namespace JhulayLal_Enterprise.Controllers
       
         public ActionResult AddSales(List<AspNetSale> aspNetSale)
         {
-            if (ModelState.IsValid)
-            {
+            try { 
                 foreach(var sale in aspNetSale)
                 {
                     db.AspNetSales.Add(sale);
-                    AspNetBillDetail aspNetBillDetail = new AspNetBillDetail();
+                    AspNetBillDetail aspNetBillDetail = new AspNetBillDetail();                    
                     aspNetBillDetail.BillID = sale.BillID;
                     aspNetBillDetail.Bags = sale.Quantity;
                     aspNetBillDetail.Rate = sale.Rate;
@@ -77,14 +70,16 @@ namespace JhulayLal_Enterprise.Controllers
                     db.AspNetBillDetails.Add(aspNetBillDetail);
 
                 }
-              
                db.SaveChanges();
-               return RedirectToAction("Index");
             }
-
-           // ViewBag.BillID = new SelectList(db.AspNetBills, "Id", "Truck_No", aspNetSale.BillID);
+            catch(Exception e)
+            {
+                ViewBag.Error = e.Message;
+            }
+            return Content("1", "application/json");
+            // ViewBag.BillID = new SelectList(db.AspNetBills, "Id", "Truck_No", aspNetSale.BillID);
             //ViewBag.CustomerID = new SelectList(db.AspNetCustomers, "Id", "Name", aspNetSale.CustomerID);
-            return View(aspNetSale);
+
         }
 
         public ActionResult CashReceived()
@@ -173,7 +168,36 @@ namespace JhulayLal_Enterprise.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        //Sheheryer 29/12/2017
+        //View TodaysSale added
+        public ActionResult TodaysSale()
+        {
+            List<AspNetSale> todaySaleList = new List<AspNetSale>();
+            todaySaleList= db.AspNetSales.Where(x => x.Date == DateTime.Today).Select(x => x).ToList();
+            return View(todaySaleList);
+        }
+        public ActionResult FarmersSale()
+        {
+            var abc=db.AspNetSales.GroupBy(x => x.AspNetBill.AspNetFarmer.Name).Select(x => x).ToList();
+            FarmerSalesModel[] lists = new FarmerSalesModel[abc.Count];
+            for (int i = 0; i < abc.Count; i++)
+            {
+                lists[i] = new FarmerSalesModel();
+            }
+            for (int i = 0; i < abc.Count; i++)
+            {
+                lists[i].Name = abc[i].Key; 
+            }
+            for(int i=0;i<abc.Count;i++)
+            {
+                string name = lists[i].Name;
+                var sales = db.AspNetSales.Where(x => x.AspNetBill.AspNetFarmer.Name == name).Select(x => x).ToList();
+                lists[i].saleslist=sales;
+            }
+            return View(lists);
+        }
 
+        //Ends here
         protected override void Dispose(bool disposing)
         {
             if (disposing)

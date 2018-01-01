@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -35,7 +35,7 @@
           <Property Name="Expenses" Type="int" />
           <Property Name="Total Amount" Type="int" />
           <Property Name="Bill Status" Type="nvarchar" MaxLength="50" />
-          <Property Name="BillName" Type="nvarchar" MaxLength="50" />
+          <Property Name="FarmerName" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="AspNetBillDetail">
           <Key>
@@ -59,6 +59,7 @@
           <Property Name="CNIC" Type="nvarchar" MaxLength="50" />
           <Property Name="AccountNo" Type="int" />
           <Property Name="Picture" Type="image" />
+          <Property Name="Imagepath" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="AspNetFarmer">
           <Key>
@@ -69,6 +70,7 @@
           <Property Name="City" Type="nvarchar" MaxLength="50" />
           <Property Name="Address" Type="nvarchar(max)" />
           <Property Name="Contact No" Type="nvarchar" MaxLength="50" />
+          <Property Name="Imagepath" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -321,7 +323,7 @@
           <Property Name="Expenses" Type="Int32" />
           <Property Name="Total_Amount" Type="Int32" />
           <Property Name="Bill_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BillName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FarmerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetFarmer" Relationship="Self.FK_AspNetBill_ToFarmer" FromRole="AspNetBill" ToRole="AspNetFarmer" />
           <NavigationProperty Name="AspNetBillDetails" Relationship="Self.FK_AspNetBillDetail_ToBill" FromRole="AspNetBill" ToRole="AspNetBillDetail" />
           <NavigationProperty Name="AspNetSales" Relationship="Self.FK_AspNetSale_ToBill" FromRole="AspNetBill" ToRole="AspNetSale" />
@@ -349,6 +351,7 @@
           <Property Name="CNIC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AccountNo" Type="Int32" />
           <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Imagepath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetSales" Relationship="Self.FK_AspNetSale_ToCustomer" FromRole="AspNetCustomer" ToRole="AspNetSale" />
         </EntityType>
         <EntityType Name="AspNetFarmer">
@@ -360,6 +363,7 @@
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Contact_No" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Imagepath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetBills" Relationship="Self.FK_AspNetBill_ToFarmer" FromRole="AspNetFarmer" ToRole="AspNetBill" />
         </EntityType>
         <EntityType Name="AspNetRole">
@@ -584,7 +588,7 @@
                 <ScalarProperty Name="Expenses" ColumnName="Expenses" />
                 <ScalarProperty Name="Total_Amount" ColumnName="Total Amount" />
                 <ScalarProperty Name="Bill_Status" ColumnName="Bill Status" />
-                <ScalarProperty Name="BillName" ColumnName="BillName" />
+                <ScalarProperty Name="FarmerName" ColumnName="FarmerName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -610,6 +614,7 @@
                 <ScalarProperty Name="CNIC" ColumnName="CNIC" />
                 <ScalarProperty Name="AccountNo" ColumnName="AccountNo" />
                 <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="Imagepath" ColumnName="Imagepath" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -621,6 +626,7 @@
                 <ScalarProperty Name="City" ColumnName="City" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Contact_No" ColumnName="Contact No" />
+                <ScalarProperty Name="Imagepath" ColumnName="Imagepath" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

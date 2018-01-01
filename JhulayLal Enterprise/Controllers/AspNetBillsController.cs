@@ -22,12 +22,12 @@ namespace JhulayLal_Enterprise.Controllers
             return View(aspNetBills.ToList());
         }
 
-    
+
 
         public ActionResult NotGeneratedBills()
         {
-            var aspNetBills = db.AspNetBills.Include(a => a.AspNetFarmer).Where(x=>x.Bill_Status=="Not Generated");
-            return View("Index",aspNetBills.ToList());
+            var aspNetBills = db.AspNetBills.Include(a => a.AspNetFarmer).Where(x => x.Bill_Status == "Not Generated");
+            return View("Index", aspNetBills.ToList());
         }
 
         public class Bill
@@ -47,7 +47,7 @@ namespace JhulayLal_Enterprise.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var BagsDetail= db.AspNetBillDetails.Where(x => x.BillID == id).ToList();
+            var BagsDetail = db.AspNetBillDetails.Where(x => x.BillID == id).ToList();
             ViewBag.BagsDetail = BagsDetail;
             AspNetBill aspNetBill = db.AspNetBills.Find(id);
             aspNetBill.Amount = db.AspNetBillDetails.Where(x => x.BillID == id).Sum(x => x.Amount);
@@ -71,7 +71,7 @@ namespace JhulayLal_Enterprise.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult GenerateBill(AspNetBill aspNetBill)
         {
-           
+
             if (ModelState.IsValid)
             {
                 AspNetBill aspNetBills = db.AspNetBills.Find(aspNetBill.Id);
@@ -115,7 +115,7 @@ namespace JhulayLal_Enterprise.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-           
+
             AspNetBill aspNetBill = db.AspNetBills.Find(id);
             if (aspNetBill == null)
             {
@@ -142,8 +142,6 @@ namespace JhulayLal_Enterprise.Controllers
             if (ModelState.IsValid)
             {
                 aspNetBill.Bill_Status = "Not Generated";
-                
-                //aspNetBill.BillName = db.AspNetFarmers.Where(x => x.Id == aspNetBill.FarmerID).Select(x => x.Name).First();
                 aspNetBill.Freight_Charges = 0;
                 db.AspNetBills.Add(aspNetBill);
                 db.SaveChanges();
