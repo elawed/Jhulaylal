@@ -141,6 +141,7 @@ namespace JhulayLal_Enterprise.Controllers
         {
             if (ModelState.IsValid)
             {
+                aspNetBill.FarmerName = db.AspNetFarmers.Where(x => x.Id == aspNetBill.FarmerID).Select(x => x.Name).First();
                 aspNetBill.Bill_Status = "Not Generated";
                 aspNetBill.Freight_Charges = 0;
                 db.AspNetBills.Add(aspNetBill);

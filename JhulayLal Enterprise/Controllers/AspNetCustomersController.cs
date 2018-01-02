@@ -111,7 +111,12 @@ namespace JhulayLal_Enterprise.Controllers
                     }
                     catch (Exception ex)
                     {
-
+                        if (ex.InnerException.Message == null)
+                        {
+                            ViewBag.error = ex.Message;
+                        }
+                        else
+                            ViewBag.error = ex.InnerException.Message;
                     }
                     //aspomer.image.SaveAs(physicalPath);
                     kk = "/Content" + obj.Imagepath.Split(new string[] { "\\Content" }, StringSplitOptions.None)[1];

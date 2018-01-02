@@ -8,6 +8,8 @@ namespace JhulayLal_Enterprise.Models
     public class FarmerSalesModel
     {
         public string Name { get; set; }
-        public List<AspNetSale> saleslist { get; set; }
+
+        public List<Sale> saleslist { get; set; }
+       
     }
 }

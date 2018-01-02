@@ -1,57 +1,98 @@
 ﻿@model IEnumerable<JhulayLal_Enterprise.Models.FarmerSalesModel>
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
 <script>
+    var tableid = 0;
+    $(document).ready(function () {
+        $('#filter').click(function () {
+            var startDate = $('#startDate').val().toString();
+            var endDate = $('#EndDate').val().toString();
+            $.ajax({
+                type: 'POST',
+                url: '/AspNetSales/FilterByDate',
+                data: {'startDate': startDate , 'EndDate':endDate},
+                success:function(data)
+                {
+                    if (data == "-1")
+                    {
+                        alert("Invalid Date Selection");
+                    }
+                    console.log(data);
+                    $('#FilterBydate').empty();
+
+                    $.each(data, function (i, item) {
+                        var box = $('<div class="box box-primary"><div class="box-header with-border"><center><h4>' + item.Name + '</h4></center></div><div class="box-body"><table class="table table-bordered table-hover table-responsive"><thead><tr><th>Customer Name</th><th>Particular</th><th>Quantity</th><th>Rate</th><th>Amount</th><th>Received</th><th>Discount</th><th>Remaining</th><th>Truck_No</th></tr></thead><tbody id=' + i + '></tbody></table></div></div>');
+                        $('#FilterBydate').append(box);
+                            debugger;
+                        for (var j = 0; j < item.saleslist.length; j++) {
+                            var body = ('<tr><td>' + item.saleslist[j].CustomerName + ' </td></td><td>' + item.saleslist[j].Particular + '</td><td>' + item.saleslist[j].Quantity + '</td><td>' + item.saleslist[j].Rate + '</td><td>' + item.saleslist[j].Amount + '</td><td>' + item.saleslist[j].Received + '</td><td>' + item.saleslist[j].Discount + '</td><td>' + item.saleslist[j].Remaining + '</td><td>' + item.saleslist[j].truck + '</td></tr>');
+                            $('#FilterBydate #' + i + '').append(body);
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+
     function printout() {
         print($('#abc').html());
     }
+
+
 </script>
 <div id="abc" style="overflow-x:auto;">
-    <center><h2>Farmer Sales Records</h2></center>
-    @foreach(var record in Model)
-    {
-        <div class="box box-primary">
-               <div class="box-header with-border">
-                   <center><h4>@Html.DisplayFor(modelItem => record.Name)</h4></center>
-               </div>
-            <div class="box-body">
-                <table class="table table-bordered table-hover table-responsive">
-                    <thead>
-                        <tr>
-                            <th>
-                                Customer Name
-                            </th>
-                            <th>
-                                Particular
-                            </th>
-                            <th>
-                                Quantity
-                            </th>
-                            <th>
-                                Rate
-                            </th>
-                            <th>
-                                Amount
-                            </th>
-                            <th>
-                                Received
-                            </th>
-                            <th>
-                                Discount
-                            </th>
-                            <th>
-                                Remaining
-                            </th>
-                            <th>
-                                Truck_No
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in record.saleslist)
+    <center><h2>Farmer Sales Records</h2></center>  
+    <p><b>Start Date</b>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<b>EndDate</b></p>  
+    <input type="date" name="startDate" class="form-group" id="startDate" />
+   &emsp; &emsp;<input type="date" name="EndDate" class="form-group" id="EndDate" />
+    <input type="button" value="Filter" class="btn btn-info btn-sm" id="filter" name="filter"/>
+    <div id="FilterBydate">
+        @foreach (var record in Model)
+        {
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <center><h4>@Html.DisplayFor(modelItem => record.Name)</h4></center>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Customer Name
+                                </th>
+                                <th>
+                                    Particular
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Rate
+                                </th>
+                                <th>
+                                    Amount
+                                </th>
+                                <th>
+                                    Received
+                                </th>
+                                <th>
+                                    Discount
+                                </th>
+                                <th>
+                                    Remaining
+                                </th>
+                                <th>
+                                    Truck_No
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in record.saleslist)
                         {
                         <tr>
-                            
+
                             <td>
-                                @Html.DisplayFor(modelItem => item.AspNetCustomer.Name)
+                                @Html.DisplayFor(modelItem => item.CustomerName)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Particular)
@@ -75,16 +116,17 @@
                                 @Html.DisplayFor(modelItem => item.Remaining)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.AspNetBill.Truck_No)
+                                @Html.DisplayFor(modelItem => item.truck)
                             </td>
 
                         </tr>
                         }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>   
-    }
+        }
+    </div>
     <input type="button" value="Print" onclick="printout()" class="btn btn-primary"/>
 </div>
 

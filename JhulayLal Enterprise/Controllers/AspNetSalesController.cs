@@ -36,12 +36,12 @@ namespace JhulayLal_Enterprise.Controllers
             }
             return View(aspNetSale);
         }
-        //[HttpGet]
-        //public ActionResult GetRemainingBags(string Billname)
-        //{
-        //    var numberofBags=db.AspNetBills.Where(x => x.BillName == Billname).Select(x => x.Bags_Qty).First();
-        //    return Json(numberofBags,JsonRequestBehavior.AllowGet);
-        //}
+        [HttpGet]
+        public ActionResult GetRemainingBags(int Billname)
+        {
+            var numberofBags = db.AspNetBills.Where(x => x.Id == Billname).Select(x => x.Bags_Qty).First();
+            return Json(numberofBags, JsonRequestBehavior.AllowGet);
+        }
 
         // GET: AspNetSales/Create
         public ActionResult Create()
@@ -176,6 +176,52 @@ namespace JhulayLal_Enterprise.Controllers
             todaySaleList= db.AspNetSales.Where(x => x.Date == DateTime.Today).Select(x => x).ToList();
             return View(todaySaleList);
         }
+        public JsonResult FilterByDate(DateTime startDate, DateTime EndDate)
+        {
+            var datetoday = DateTime.Today;
+
+            if (datetoday< startDate)
+            {
+                return Json("-1", JsonRequestBehavior.AllowGet);
+            }
+            if (datetoday < EndDate)
+            {
+                return Json("-1", JsonRequestBehavior.AllowGet);
+            }
+            if(startDate>EndDate)
+            {
+                return Json("-1", JsonRequestBehavior.AllowGet);
+            }
+            var abc = db.AspNetSales.Where(x => x.Date >= startDate && x.Date<=EndDate).GroupBy(x => x.AspNetBill.AspNetFarmer.Name).Select(x => x).ToList();
+            FarmerSalesModel[] lists = new FarmerSalesModel[abc.Count];
+            for (int i = 0; i < abc.Count; i++)
+            {
+                lists[i] = new FarmerSalesModel();
+                lists[i].Name = abc[i].Key;
+            }
+            for (int i = 0; i < abc.Count; i++)
+            {
+                string name = lists[i].Name;
+                var sales = db.AspNetSales.Where(sale => sale.Date >= startDate && sale.Date <= EndDate && sale.AspNetBill.AspNetFarmer.Name == name).Select(x => x).ToList();
+                lists[i].saleslist = new List<Sale>();
+                foreach (var item in sales)
+                {
+                    Sale mysale = new Sale();
+                    mysale.CustomerName = item.AspNetCustomer.Name; ;
+                    mysale.Particular = item.Particular;
+                    mysale.Quantity = item.Quantity;
+                    mysale.Rate = item.Rate;
+                    mysale.Amount = item.Amount;
+                    mysale.Received = item.Received;
+                    mysale.Discount = item.Discount;
+                    mysale.Remaining = item.Remaining;
+                    mysale.truck = item.AspNetBill.Truck_No;
+                    lists[i].saleslist.Add(mysale);
+                }
+                
+            }
+            return Json(lists, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult FarmersSale()
         {
             var abc=db.AspNetSales.GroupBy(x => x.AspNetBill.AspNetFarmer.Name).Select(x => x).ToList();
@@ -183,16 +229,28 @@ namespace JhulayLal_Enterprise.Controllers
             for (int i = 0; i < abc.Count; i++)
             {
                 lists[i] = new FarmerSalesModel();
+                lists[i].Name = abc[i].Key; 
             }
             for (int i = 0; i < abc.Count; i++)
             {
-                lists[i].Name = abc[i].Key; 
-            }
-            for(int i=0;i<abc.Count;i++)
-            {
                 string name = lists[i].Name;
-                var sales = db.AspNetSales.Where(x => x.AspNetBill.AspNetFarmer.Name == name).Select(x => x).ToList();
-                lists[i].saleslist=sales;
+                var sales = db.AspNetSales.Where(sale => sale.AspNetBill.AspNetFarmer.Name == name).Select(x => x).ToList();
+                lists[i].saleslist = new List<Sale>();
+                foreach (var item in sales)
+                {
+                    Sale mysale = new Sale();
+                    mysale.CustomerName = item.AspNetCustomer.Name;
+                    mysale.Particular = item.Particular;
+                    mysale.Quantity = item.Quantity;
+                    mysale.Rate = item.Rate;
+                    mysale.Amount = item.Amount;
+                    mysale.Received = item.Received;
+                    mysale.Discount = item.Discount;
+                    mysale.Remaining = item.Remaining;
+                    mysale.truck = item.AspNetBill.Truck_No;
+                    lists[i].saleslist.Add(mysale);
+                }
+
             }
             return View(lists);
         }

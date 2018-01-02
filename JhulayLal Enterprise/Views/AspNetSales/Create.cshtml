@@ -27,7 +27,6 @@
             var id = $('#CustomerID').val();
              $.get('@Url.Action("GetCustomerInfomration","AspNetCustomers")',
                  { Id: id }, function (data) {
-                     console.log(data);
                      RemainingBalance = data.Remaining;
             });
         });
@@ -47,15 +46,16 @@
             $('#BagsTable tr:last #Discount').keyup(function () {
                 ChangeDiscount(this);
             });
-            //$('#BagsTable tr:last #Bill').change(function (e) {
-            //    var r  = $('#BillID')[0].value
-            //    ChangeRemainingBags(this,r);
-            //});
+            $('#BagsTable tr:last #Bill').change(function (e) {                
+                var r  = $('#BillID')[0].value
+                ChangeRemainingBags(this,r);
+            });
             $('#BagsTable tr:last #Amount').change(function () {
                 CalculateRemaining(this);
             });
 
-
+            var a = $('#BillID')[0].value
+            ChangeRemainingBags(this, a);
         });
 
         $("#AddSale").bind("click", function () {
@@ -136,14 +136,14 @@
         CalculateRemaining();
 
     }
-    @*function ChangeRemainingBags(td,Select)
+    function ChangeRemainingBags(td,Select)
     {
         tr = td.closest('tr');
         $.get('@Url.Action("GetRemainingBags","AspNetSales")',
         { Billname: Select }, function (data) {
             $("td[id='RemainingBags']", tr).html(parseInt(data));
         });
-    }*@
+    }
     function CalculateRemaining()
     {
         TempRemaining = RemainingBalance;
@@ -184,7 +184,7 @@
 
     function GetEnrollmentRow(value) {
 
-        var html = ' <tr><td id="Bill"></td><td><select id="Particular" class="form-control"><option value="Sale">Sale</option><option value="Cash">Cash</option></select></td><td><input id="Quantity" class="form-control"></td><td><input id="Rate" class="form-control"></td><td><input id="Amount" class="form-control"></td><td><input id="Received" class="form-control"></td><td><input id="Discount" class="form-control"></td><td><input id="Remaining" value=' + RemainingBalance + ' class="form-control"></td><td><input type="button" class="btn btn-danger remove" value="Remove" onclick="DeleteRow(this);"></td></tr>';
+        var html = ' <tr><td id="Bill"></td><td><select id="Particular" class="form-control"><option value="Sale">Sale</option><option value="Cash">Cash</option></select></td><td id="RemainingBags"></td><td><input id="Quantity" class="form-control"></td><td><input id="Rate" class="form-control"></td><td><input id="Amount" class="form-control"></td><td><input id="Received" class="form-control"></td><td><input id="Discount" class="form-control"></td><td><input id="Remaining" value=' + RemainingBalance + ' class="form-control"></td><td><input type="button" class="btn btn-danger remove" value="Remove" onclick="DeleteRow(this);"></td></tr>';
         return html;
     }
 </script>
@@ -228,19 +228,19 @@
                 <thead>
                     <tr>
                         <th>
-                            Bill
+                            Farmer Name
                         </th>
                         <th>
                             Particular
                         </th>
                         <th>
-                            Remaining Bags
+                            Total Bags
                         </th>
                         <th>
-                            Quantity
+                            No. of Bags
                         </th>
                         <th>
-                            Rate
+                            Rate/Piece
                         </th>
                         <th>
                             Amount
