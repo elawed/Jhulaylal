@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using JhulayLal_Enterprise.Models;
+using System.IO;
 
 namespace JhulayLal_Enterprise.Controllers
 {
@@ -33,6 +34,7 @@ namespace JhulayLal_Enterprise.Controllers
             ViewBag.Name = aspNetCustomer.Name;
             ViewBag.ContactNo = aspNetCustomer.Contact_No;
             ViewBag.AccountNo = aspNetCustomer.AccountNo;
+            ViewBag.Image = aspNetCustomer.Imagepath;
             ViewBag.CNIC = aspNetCustomer.CNIC;
             if (aspNetCustomer == null)
             {
@@ -71,6 +73,77 @@ namespace JhulayLal_Enterprise.Controllers
             }
 
             return View(aspNetCustomer);
+        }
+
+
+        public ActionResult Creaoote([Bind(Include = "Id,Name,City,Address,Contact_No,CNIC,AccountNo,Picture,image")] Customer aspomer)
+        {
+            if (ModelState.IsValid)
+            {
+                AspNetCustomer obj = new AspNetCustomer();
+
+                obj.AccountNo = aspomer.AccountNo;
+                obj.Address = aspomer.Address;
+                obj.City = aspomer.City;
+                obj.CNIC = aspomer.CNIC;
+                obj.Contact_No = aspomer.Contact_No;
+                obj.Name = aspomer.Name;
+
+                db.AspNetCustomers.Add(obj);
+                db.SaveChanges();
+                string kk = "";
+                if(aspomer.image != null)
+                {
+                    MemoryStream target = new MemoryStream();
+                    aspomer.image.InputStream.CopyTo(target);
+                    byte[] data = target.ToArray();
+
+                    string ImageName = System.IO.Path.GetFileName(aspomer.image.FileName); //file2 to store path and url  
+                    string physicalPath = Server.MapPath("~/Content/img/customer/" + obj.Id);
+                    if (!Directory.Exists(physicalPath))
+                    {
+                        Directory.CreateDirectory(physicalPath);
+                    }
+                    try
+                    {
+                        obj.Imagepath = physicalPath + "\\Pic.jpg";
+                        System.IO.File.WriteAllBytes(obj.Imagepath, data);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    //aspomer.image.SaveAs(physicalPath);
+                    kk = "/Content" + obj.Imagepath.Split(new string[] { "\\Content" }, StringSplitOptions.None)[1];
+                    
+
+                }
+                else
+                {
+                    kk = "/Content/img/user.png";
+                }
+                db.AspNetCustomers.Where(p => p.Id == obj.Id).FirstOrDefault().Imagepath = kk;
+                db.SaveChanges();
+
+
+
+                //obj.Picture = BinaryReader.ReadBytes(dd);
+                //byte[] image = BinaryReader.ReadBytes(108732);
+
+                //db.AspNetCustomers.Add(aspNetCustomer);
+
+                //db.SaveChanges();
+                int cutomerID = db.AspNetCustomers.Max(x => x.Id);
+                AspNetSale aspNetSale = new AspNetSale();
+                aspNetSale.Particular = "Opening Balance";
+                aspNetSale.Date = DateTime.Now;
+                aspNetSale.Remaining = Convert.ToInt32(Request.Form["OpeningBalance"]);
+                aspNetSale.CustomerID = cutomerID;
+                db.AspNetSales.Add(aspNetSale);
+                return RedirectToAction("Index");
+            }
+
+            return View(aspomer);
         }
 
         // GET: AspNetCustomers/Edit/5
@@ -158,5 +231,7 @@ namespace JhulayLal_Enterprise.Controllers
             customerInformation.Remaining = Remaining;
             return Json(customerInformation, JsonRequestBehavior.AllowGet);
         }
+
+        
     }
 }
